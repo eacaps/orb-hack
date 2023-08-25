@@ -1,3 +1,8 @@
+/**
+ * TODO: this is a copy paste job of: https://github.com/memgraph/orb/blob/8e0a6870a473fe59c01636273de0662924479277/src/views/default-view.ts
+ * with the _simulator changed out to always be the MainThreadSimulator
+ */
+
 import { D3DragEvent, drag } from "d3-drag";
 import { easeLinear } from "d3-ease";
 /* eslint-disable @typescript-eslint/no-unused-vars */
@@ -124,7 +129,9 @@ export class OrbView<N extends INodeBase, E extends IEdgeBase> implements IOrbVi
       .on('contextmenu', this.mouseRightClicked)
       .on('dblclick.zoom', this.mouseDoubleClicked);
 
-    this._simulator = SimulatorFactory.getSimulator();
+    this._simulator = context.simulationFactory
+      ? context.simulationFactory.getSimulator()
+      : SimulatorFactory.getSimulator();
     this._simulator.on(SimulatorEventType.SIMULATION_START, () => {
       this._isSimulating = true;
       this._simulationStartedAt = Date.now();
